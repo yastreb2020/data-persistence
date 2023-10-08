@@ -9,9 +9,12 @@ public class DataSaver : MonoBehaviour
     public static DataSaver instance;
     public string playerName;
     string saveFilePath;
+    //public static SaveData data;
 
     void Awake()
     {
+        //Debug.Log(playerName == null);
+        //Debug.Log(playerName == "");
         if (instance == null)
         {
             saveFilePath = Application.persistentDataPath + "/bestscore.json";
@@ -31,7 +34,7 @@ public class DataSaver : MonoBehaviour
         public string bestPlayerName;
     }
 
-    public void SaveDataFile(string playerName, int bestScore)
+    public void SaveDataFile(int bestScore)
     {
         SaveData data = new SaveData();
         data.bestScore = bestScore;
@@ -50,4 +53,12 @@ public class DataSaver : MonoBehaviour
         return data;
     }
 
+    public string NewBestScoreText(SaveData bestScoreData)
+    {
+        if (bestScoreData != null)
+        {
+            return $"Best Score:{bestScoreData.bestPlayerName}:{bestScoreData.bestScore}";
+        }
+        return "Best Score::0";
+    }
 }

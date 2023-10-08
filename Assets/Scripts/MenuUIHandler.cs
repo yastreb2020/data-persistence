@@ -21,21 +21,14 @@ public class MenuUIHandler : MonoBehaviour
 
     private void Start()
     {
-        UpdateBestScoreText();
-    }
 
-    private void UpdateBestScoreText()
-    {
         DataSaver.SaveData bestScoreData = DataSaver.instance.LoadDataFile();
-        if (bestScoreData != null)
-        {
-            bestScoreText.text = $"Best Score:{bestScoreData.bestPlayerName}:{bestScoreData.bestScore}";
-        }
+        bestScoreText.text = DataSaver.instance.NewBestScoreText(bestScoreData);
     }
 
     public void StartButton()
     {
-        if (DataSaver.instance.playerName != null)
+        if (DataSaver.instance.playerName != "")
         {            
             SceneManager.LoadScene("main");
         }
@@ -54,7 +47,7 @@ public class MenuUIHandler : MonoBehaviour
         else
         {
             nameInputField.image.color = wrongInputColor;
-            DataSaver.instance.playerName = null;
+            DataSaver.instance.playerName = "";
         }
     }
 
