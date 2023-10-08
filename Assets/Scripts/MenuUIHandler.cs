@@ -9,29 +9,34 @@ using TMPro;
     using UnityEditor;
 #endif
 
+
 public class MenuUIHandler : MonoBehaviour
 {
-    string playerName;
     [SerializeField] TMP_InputField nameInputField;
+    [SerializeField] TextMeshProUGUI bestScoreText;
     Color neutralInputColor = new Color32(255, 255, 255, 255);
     Color wrongInputColor = new Color32(239, 170, 170, 134);
     //or  wrongInputColor = new Color(0.9372549f, 0.6666667f, 0.6666667f, 0.5254902f);
     // "EFAAAA"
 
-    void Start()
+    private void Start()
     {
-
+        UpdateBestScoreText();
     }
 
-    void Update()
+    private void UpdateBestScoreText()
     {
-        
+        DataSaver.SaveData bestScoreData = DataSaver.instance.LoadDataFile();
+        if (bestScoreData != null)
+        {
+            bestScoreText.text = $"Best Score:{bestScoreData.bestPlayerName}:{bestScoreData.bestScore}";
+        }
     }
 
     public void StartButton()
     {
-        if (playerName != null)
-        {
+        if (DataSaver.instance.playerName != null)
+        {            
             SceneManager.LoadScene("main");
         }
         else
@@ -42,14 +47,14 @@ public class MenuUIHandler : MonoBehaviour
 
     public void CheckEnteredName()
     {
-        if (nameInputField.text.Length > 1) { 
-            playerName = nameInputField.text;
+        if (nameInputField.text.Length > 1) {
+            DataSaver.instance.playerName = nameInputField.text;
             nameInputField.image.color = neutralInputColor;
         }
         else
         {
             nameInputField.image.color = wrongInputColor;
-            playerName = null;
+            DataSaver.instance.playerName = null;
         }
     }
 
@@ -61,4 +66,5 @@ public class MenuUIHandler : MonoBehaviour
         Application.Quit();
 #endif
     }
+
 }
