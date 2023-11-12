@@ -818,7 +818,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 298, y: 222}
+  m_SizeDelta: {x: 1301.9, y: 222}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1071485560
 MonoBehaviour:
@@ -833,7 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.25642577, g: 0.6479074, b: 0.9245283, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1467,7 +1467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39361c5fa770797459d3bf9f8a94d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
 --- !u!4 &1714287942
 Transform:
   m_ObjectHideFlags: 0

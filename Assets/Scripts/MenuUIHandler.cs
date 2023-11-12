@@ -21,33 +21,28 @@ public class MenuUIHandler : MonoBehaviour
 
     private void Start()
     {
-
-        DataSaver.SaveData bestScoreData = DataSaver.instance.LoadDataFile();
-        bestScoreText.text = DataSaver.instance.NewBestScoreText(bestScoreData);
+        bestScoreText.text = DataSaver.instance.NewBestScoreText();
+        nameInputField.text = DataSaver.saveData.currentPlayer;
     }
 
     public void StartButton()
     {
-        if (DataSaver.instance.playerName != "")
+        if (nameInputField.text != "")
         {            
             SceneManager.LoadScene("main");
-        }
-        else
-        {
-            nameInputField.text = "";
         }
     }
 
     public void CheckEnteredName()
     {
         if (nameInputField.text.Length > 1) {
-            DataSaver.instance.playerName = nameInputField.text;
+            DataSaver.saveData.currentPlayer = nameInputField.text;
             nameInputField.image.color = neutralInputColor;
         }
         else
         {
             nameInputField.image.color = wrongInputColor;
-            DataSaver.instance.playerName = "";
+            DataSaver.saveData.currentPlayer = "";
         }
     }
 

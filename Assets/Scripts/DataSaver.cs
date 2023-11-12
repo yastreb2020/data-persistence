@@ -7,17 +7,15 @@ using System;
 public class DataSaver : MonoBehaviour
 {
     public static DataSaver instance;
-    public string playerName;
-    string saveFilePath;
-    //public static SaveData data;
+    private static string saveFilePath;
+    public static SaveData saveData;
 
     void Awake()
     {
-        //Debug.Log(playerName == null);
-        //Debug.Log(playerName == "");
         if (instance == null)
         {
             saveFilePath = Application.persistentDataPath + "/bestscore.json";
+            saveData = LoadDataFile();
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -32,33 +30,44 @@ public class DataSaver : MonoBehaviour
     {
         public int bestScore;
         public string bestPlayerName;
+        public string currentPlayer;
     }
 
-    public void SaveDataFile(int bestScore)
+    [Serializable]
+    public class PlayerInfo
     {
-        SaveData data = new SaveData();
-        data.bestScore = bestScore;
-        data.bestPlayerName = playerName;
+        public string name;
+    }
 
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(saveFilePath, json);
+    public static void SaveDataFile()
+    {
+        if (saveData != null)
+        {
+            string json = JsonUtility.ToJson(saveData);
+            File.WriteAllText(saveFilePath, json);
+        }
     }
     public SaveData LoadDataFile()
     {
         if (!File.Exists(saveFilePath))
-            return null;
-        string text = File.ReadAllText(saveFilePath);
-        SaveData data = JsonUtility.FromJson<SaveData>(text);
-        
-        return data;
+        {
+            saveData = new SaveData { bestPlayerName = "", bestScore = 0, currentPlayer = "" };
+        }
+        else
+        {
+            string text = File.ReadAllText(saveFilePath);
+            saveData = JsonUtility.FromJson<SaveData>(text);
+        }
+
+        return saveData;
     }
 
-    public string NewBestScoreText(SaveData bestScoreData)
+    public string NewBestScoreText()
     {
-        if (bestScoreData != null)
-        {
-            return $"Best Score:{bestScoreData.bestPlayerName}:{bestScoreData.bestScore}";
-        }
-        return "Best Score::0";
+        //if (saveData != null)
+        //{
+            return $"Best Score:{saveData.bestPlayerName}:{saveData.bestScore}";
+        //}
+        //return "Best Score::0";
     }
 }

@@ -13,7 +13,11 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public GameObject GameOverText;
     [SerializeField] Text BestScoreText;
-    
+
+    AudioSource audioData;
+    [SerializeField] AudioClip backgroundMusic;
+    [SerializeField] AudioClip gameOverSound;
+
     private bool m_Started = false;
     private int m_Points;
     
@@ -23,8 +27,11 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DataSaver.SaveData data = DataSaver.instance.LoadDataFile();
-        BestScoreText.text = DataSaver.instance.NewBestScoreText(data);
+        audioData = GetComponent<AudioSource>();
+        audioData.loop = true;
+        audioData.PlayOneShot(backgroundMusic);
+
+        BestScoreText.text = DataSaver.instance.NewBestScoreText();
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -74,13 +81,23 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
-        DataSaver.SaveData data = DataSaver.instance.LoadDataFile();
-        if (data == null || m_Points > data.bestScore)
+        audioData.loop = false;
+        audioData.Stop();
+        audioData.PlayOneShot(gameOverSound);
+
+        if (m_Points > DataSaver.saveData.bestScore)
         {
-            DataSaver.instance.SaveDataFile(m_Points);
-            BestScoreText.text = DataSaver.instance.NewBestScoreText(data);
+            DataSaver.saveData.bestScore = m_Points;
+            DataSaver.saveData.bestPlayerName = DataSaver.saveData.currentPlayer;
+            DataSaver.SaveDataFile();
+            BestScoreText.text = DataSaver.instance.NewBestScoreText();
         }
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    public void BackToMenuButton()
+    {
+        SceneManager.LoadScene("menu");
     }
 }

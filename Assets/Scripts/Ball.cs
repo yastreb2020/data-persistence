@@ -6,14 +6,20 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody m_Rigidbody;
+    AudioSource m_AudioSource;
+    [SerializeField] AudioClip touchSound;
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_AudioSource = GetComponent<AudioSource>();
     }
     
     private void OnCollisionExit(Collision other)
     {
+        if (other.gameObject.tag == "Obstacle")
+            m_AudioSource.PlayOneShot(touchSound);
+
         var velocity = m_Rigidbody.velocity;
         
         //after a collision we accelerate a bit
